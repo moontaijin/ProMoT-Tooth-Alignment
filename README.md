@@ -14,10 +14,19 @@ Official implementation of:
 </p>
 
 <p align="center">
-  <img src="assets/full_teeth.gif" width="420">
-  <img src="assets/front_teeth.gif" width="420">
+  <table>
+    <tr>
+      <td align="center">
+        <img src="assets/full_teeth.gif" width="420"><br>
+        <sub>Upper arch trajectory</sub>
+      </td>
+      <td align="center">
+        <img src="assets/front_teeth.gif" width="420"><br>
+        <sub>Lower arch trajectory</sub>
+      </td>
+    </tr>
+  </table>
 </p>
-
 ---
 
 ## Highlights
