@@ -18,11 +18,11 @@ Official implementation of:
     <tr>
       <td align="center">
         <img src="assets/full_teeth.gif" width="420"><br>
-        <sub>Upper arch trajectory</sub>
+        <sub>Full teeth trajectory</sub>
       </td>
       <td align="center">
         <img src="assets/front_teeth.gif" width="420"><br>
-        <sub>Lower arch trajectory</sub>
+        <sub>Front teeth trajectory</sub>
       </td>
     </tr>
   </table>
@@ -165,10 +165,6 @@ The main metrics include ADD/AUC, ADD, AAE, mean rotation error, and mean transl
 | STTAlign | 0.844 | 0.820 | 1.136 | 3.136 | 1.836 |
 | **ProMoT** | **0.863** | **0.794** | **0.980** | **3.121** | **1.750** |
 
-<p align="center">
-  <img src="assets/qualitative_results.png" width="900">
-</p>
-
 ---
 
 ## Note on Virtual Trajectories
@@ -188,18 +184,3 @@ https://github.com/sgvdzfbxfb/STTAlign
 We thank the authors of STTAlign for releasing their implementation.
 
 ---
-
-## Citation
-
-If you find this repository useful, please cite our paper:
-
-```bibtex
-@inproceedings{promot2026toothalignment,
-  title     = {Tooth Alignment via Virtual Trajectories with Clinical Constraints},
-  author    = {Anonymous Authors},
-  booktitle = {Proceedings of the International Conference on Medical Image Computing and Computer-Assisted Intervention},
-  year      = {2026}
-}
-```
-
-The BibTeX entry will be updated after publication.
