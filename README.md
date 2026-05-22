@@ -10,11 +10,12 @@ Official implementation of:
 **ProMoT** formulates automatic tooth alignment as a virtual progressive tooth movement trajectory problem. Instead of directly predicting a one-shot final tooth pose, it predicts staged incremental rigid transformations and applies clinically motivated constraints along the intermediate trajectory.
 
 <p align="center">
-  <img src="assets/method_overview.png" width="900">
+  <img src="assets/overall_structure.png" width="900">
 </p>
 
 <p align="center">
-  <img src="assets/trajectory.gif" width="850">
+  <img src="assets/full_teeth.gif" width="420">
+  <img src="assets/front_teeth.gif" width="420">
 </p>
 
 ---
