@@ -1,0 +1,9 @@
+{
+  "type": "pointnetpp",
+  "out_dim": 256,
+  "use_center": true,
+  "use_normals": false,
+  "sa_npoints": [512, 128, 32],
+  "sa_radii": [0.10, 0.20, 0.40],
+  "sa_nsamples": [32, 64, 128]
+}

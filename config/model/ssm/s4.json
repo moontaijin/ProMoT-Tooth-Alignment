@@ -1,0 +1,6 @@
+{
+  "type": "s4",
+  "K": 21,
+  "n_layers": 4,
+  "dropout": 0.1
+}

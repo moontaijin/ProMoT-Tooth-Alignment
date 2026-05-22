@@ -1,0 +1,11 @@
+{
+  "type": "pointnext",
+  "out_dim": 256,
+  "use_center": true,
+  "freeze": false,
+
+  "k": 16,
+  "stage_points": [128, 32, null],
+  "stage_dims": [64, 128, 256],
+  "expansion": 4
+}
