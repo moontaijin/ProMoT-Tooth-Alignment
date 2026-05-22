@@ -1,0 +1,134 @@
+experiment:
+  name: test
+  seed: 42
+  device: cuda:0
+  output_dir: outputs/test
+  num_workers: 8
+  save_every: 50
+  eval_every: 1
+
+data:
+  splits_json: /path/to/splits.json   # <- change to your splits.json
+  data_root: /path/to/orthodontic-dataset
+  num_points: 512
+  raw_otf: true
+
+training:
+  epochs: 10
+  batch_size: 32
+  test_batch_size: 1
+  lr: 0.0001
+  weight_decay: 0.0001
+  stage_aug_micro:
+    enabled: false
+    start_epoch: 1          # epoch 0에는 cache가 없어서 1부터 권장
+    prob: 1.0               # 원본은 항상 학습 + pseudo를 추가할 확률(샘플 단위)
+    steps: [5, 10, 15]      # pseudo-start로 만들 step 리스트 (1..K)
+    max_pseudos: 0          # 0이면 steps 전부, >0이면 steps 중 랜덤으로 이 개수만 사용
+    alpha: 0.5              # L = L_orig + alpha * mean(L_pseudo_k)
+    cache_dtype: float16    # 권장
+    teacher: prev_epoch     # prev_epoch(권장) | current
+
+optimizer:
+  name: adamw
+  momentum: 0.9
+scheduler:
+  name: cos
+
+model:
+  encoder:
+    name: pointnetpp      # [swin, pointnetpp, pointnext]
+    config: config/model/encoder/pointnetpp.json
+  ssm:
+    name: s4          # [kalman, s4]
+    config: config/model/ssm/s4.json
+  decoder:
+    name: baseline        # [baseline]
+    config: config/model/decoder/baseline.json
+
+loss:
+  terms:
+  - name: recon
+    weight: 1.0
+    enabled: true
+    params:
+      w_c: 1.0
+  - name: dof
+    weight: 10.0
+    enabled: true
+  - name: trans
+    weight: 1.0
+    enabled: true
+  - name: angle
+    weight: 1.0
+    enabled: true
+  # Already computed in legacy loop; detached by default (legacy behavior)
+  - name: occlusion
+    weight: 1.0
+    enabled: true
+    params:
+      detach: true
+      w_cox: 1.0
+      w_groove: 1.0
+      w_incisors: 1.0
+  - name: arch_geodesic
+    enabled: true
+    weight: 0.2
+    params:
+      lambda_geo: 1.0
+      lambda_perp: 0.3
+      lambda_tan: 0.0
+      use_xy: true
+      soft_projection: false
+      soft_temp: 0.01
+  - name: movement_balance
+    enabled: true
+    weight: 0.05
+    params:
+      alpha_trans: 1.0
+      beta_rot: 0.1
+      mode: 'pairwise_l2'   # 'pairwise_l2' | 'pairwise_skl' | (기존 'l2_uniform' 등)
+      use_steps: True
+      eps: 1e-6
+      peak_cap: 0.0       # 0이면 비활성. 예: 0.35면 "한 치아가 step 이동량의 35% 초과"만 벌점
+      peak_w: 0.1         # peak_cap 가중치
+  - name: geodesic_step
+    weight: 1.0
+    enabled: false
+    params:
+      rot_w: 1.0
+      trans_w: 1.0
+      trans_scale: 10.0
+      step_weight: linear   # uniform/linear/sqrt/exp
+      use_weights: true
+  - name: interproximal_spacing
+    enabled: true
+    weight: 0.02
+    params:
+      K_virtual: 21
+      n_points: 128
+      margin_mm: 0.5
+      softmin_tau: 0.0
+      skip_first: 0
+      skip_last: 1
+      step_weight: middle
+  - name: occlusal_plane
+    enabled: true
+    weight: 0.01
+    params:
+      K_virtual: 21
+      plane_from: gt   # gt | init | avg
+      tol_mm: 1.5
+      skip_first: 0
+      skip_last: 1
+      step_weight: middle
+
+runtime:
+  resume_ckpt: null
+  strict_load: true
+
+logging:
+  print_loss_terms: false        # true면 상세 loss term 출력, false면 off
+  loss_terms_precision: 3       # (옵션) 소수점 자리
+  loss_terms_max_terms: 0       # (옵션) 0이면 전부, 8이면 상위 8개만
+  loss_terms_delta: false        # (옵션) 이전 epoch 대비 증감(Δ) 표시

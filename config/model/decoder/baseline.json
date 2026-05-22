@@ -1,0 +1,9 @@
+{
+  "type": "baseline",
+  "in_dim": 256,
+  "rot_rep": "quat",
+  "trans_rep": "xyz",
+  "mlp": [256, 256],
+  "dropout": 0.0,
+  "normalize_quat": true
+}
